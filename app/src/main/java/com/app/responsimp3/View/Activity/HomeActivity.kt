@@ -18,8 +18,13 @@ import com.app.responsimp3.View.Fragment.HomeFragment
 import com.app.responsimp3.View.Fragment.PaymentFragment
 import com.app.responsimp3.View.Fragment.SettingFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.squareup.picasso.Picasso
 
 class HomeActivity : AppCompatActivity() {
+    private lateinit var auth: FirebaseAuth
     private lateinit var ivprofil : ImageView
     private lateinit var tvuser : TextView
     private lateinit var toolbar: Toolbar
@@ -28,6 +33,9 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
+        initFirebase()
+        getData()
+
         toolbar = findViewById(R.id.tbout)
         bottomnav = findViewById(R.id.bottomnav)
         tvuser = findViewById(R.id.tvUser)
@@ -35,7 +43,9 @@ class HomeActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
+
         replacefragment(HomeFragment())
+
         bottomnav.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.home -> replacefragment(HomeFragment())
@@ -44,6 +54,17 @@ class HomeActivity : AppCompatActivity() {
                 R.id.setting -> replacefragment(SettingFragment())
             }
             true
+        }
+    }
+
+    private fun initFirebase() {
+        auth = FirebaseAuth.getInstance()
+    }
+
+    private fun getData() {
+        val user = auth.currentUser
+        if (user != null){
+            tvuser.text = user.displayName.toString()
         }
     }
 
@@ -66,6 +87,7 @@ class HomeActivity : AppCompatActivity() {
                 builder.setTitle("Peringatan !!! ")
                     .setMessage("Apakah Anda Ingin Keluar ? ")
                     .setPositiveButton("Yes") { dialog: DialogInterface?, which: Int ->
+                        auth.signOut()
                         Toast.makeText(this, "Sign Out Berhasil", Toast.LENGTH_SHORT).show()
                         startActivity(Intent(this, LoginActivity::class.java))
                         finish()
