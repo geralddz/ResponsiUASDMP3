@@ -33,9 +33,6 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        initFirebase()
-        getData()
-
         toolbar = findViewById(R.id.tbout)
         bottomnav = findViewById(R.id.bottomnav)
         tvuser = findViewById(R.id.tvUser)
@@ -43,7 +40,8 @@ class HomeActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-
+        initFirebase()
+        getData()
         replacefragment(HomeFragment())
 
         bottomnav.setOnItemSelectedListener {
@@ -64,7 +62,7 @@ class HomeActivity : AppCompatActivity() {
     private fun getData() {
         val user = auth.currentUser
         if (user != null){
-            tvuser.text = user.displayName.toString()
+            tvuser.text = user.email
         }
     }
 

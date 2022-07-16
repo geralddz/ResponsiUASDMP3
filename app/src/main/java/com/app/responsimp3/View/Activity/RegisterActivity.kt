@@ -29,14 +29,14 @@ class RegisterActivity : AppCompatActivity() {
         etEmailUp = findViewById(R.id.etEmailSignUp)
         etPassUp = findViewById(R.id.etPasswordSignUp)
         etCPassUp = findViewById(R.id.etConfirmPasswordSignUp)
-        auth = FirebaseAuth.getInstance()
+
         
         initActionBar()
 
         toolbarUp.setNavigationOnClickListener {
             finish()
         }
-
+        auth = FirebaseAuth.getInstance()
         btnSignUp.setOnClickListener {
             val email = etEmailUp.text.toString().trim()
             val pass = etPassUp.text.toString().trim()
@@ -46,15 +46,16 @@ class RegisterActivity : AppCompatActivity() {
                 registerToServer(email, pass)
             }
         }
+
     }
 
     private fun registerToServer(email: String, pass: String) {
         auth.createUserWithEmailAndPassword(email,pass)
             .addOnCompleteListener { task ->
+                CustomDialog.hideLoading()
                 if (task.isSuccessful){
                     startActivity(Intent(this, HomeActivity::class.java))
                     Toast.makeText(this, "Sign Up Berhasil", Toast.LENGTH_SHORT).show()
-                    CustomDialog.hideLoading()
                     finishAffinity()
                 }
             }

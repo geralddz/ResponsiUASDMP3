@@ -8,8 +8,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import com.app.responsimp3.R
 import com.google.firebase.auth.FirebaseAuth
 
@@ -18,16 +16,16 @@ class RecoveryActivity : AppCompatActivity() {
     private lateinit var etEmailreset : EditText
     private lateinit var btnSendMail : Button
     private lateinit var auth: FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recovery)
-        initActionBar()
         auth = FirebaseAuth.getInstance()
         toolbarreset = findViewById(R.id.tbForgotPass)
         etEmailreset = findViewById(R.id.etEmailResetPass)
         btnSendMail = findViewById(R.id.btnSendEmail)
-        
 
+        initActionBar()
         toolbarreset.setNavigationOnClickListener {
             finish()
         }
